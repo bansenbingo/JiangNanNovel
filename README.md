@@ -67,6 +67,23 @@ JiangNanNovel/
 - 龙族人格：`/author-jiang-nan-longzu`
 - 天之炽人格：`/author-jiang-nan-tianzhichi`
 
+## 一键安装技能到其他项目（tools/install_jiangnan_skills.py）
+
+默认情况下技能随本仓库生效。若要在**其他项目**中使用江南人格，运行：
+
+```bash
+python3 tools/install_jiangnan_skills.py                 # 安装到当前目录
+python3 tools/install_jiangnan_skills.py --project ~/novels   # 安装到指定项目
+python3 tools/install_jiangnan_skills.py --uninstall      # 停用
+python3 tools/install_jiangnan_skills.py --list           # 查看技能清单
+```
+
+特性：
+- **来源为远程仓库**：脚本自动从 GitHub 拉取最新技能（支持 `--repo`/`--branch`/`--offline` 指定来源）
+- **项目隔离**：只在运行脚本时指定的项目内激活，其他项目不受影响
+- **内容不入库**：技能实体仅存于系统缓存（`~/Library/Caches/JiangNanSkills`），项目内只是符号链接，并自动写入 `.gitignore`
+- **随用随停**：卸载或删除链接后 Agent 不再加载；更新技能只需重新运行脚本
+
 ## 训练方法
 
 如需重新训练或训练其他作者，可参考蒸馏作者 skill（`Skills-for-Long-Online-Novel-Authors-main`）中的"自主深度训练方法论"，包含八步流程：文本解析→文风提炼→人物情节分析→网络书评→写入注册→图灵测试→章节标题→用户反馈迭代。
