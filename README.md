@@ -69,14 +69,17 @@ JiangNanNovel/
 
 ## Release 版本（Windows EXE / macOS DMG）
 
-GitHub Release 页面（仓库右侧 Releases）提供两个免配置的发行包，由 GitHub Actions 自动构建：
+两个免配置的发行包由 GitHub Actions 自动构建，**最新版下载**：
+
+- **Windows**: [JiangNanSkills-Setup.exe](https://github.com/bansenbingo/JiangNanNovel/releases/latest/download/JiangNanSkills-Setup.exe)（下载后**双击运行**，按提示输入项目路径即可；若电脑上没有 Agent CLI，会自动优先安装 opencode）
+- **macOS**: [JiangNanSkills-macOS.dmg](https://github.com/bansenbingo/JiangNanNovel/releases/latest/download/JiangNanSkills-macOS.dmg)（打开 DMG，双击「江南技能安装.app」，或使用附带的 `jiangnan-skills` CLI）
 
 | 平台 | 文件 | 使用方式 |
 |------|------|---------|
-| Windows | `JiangNanSkills-Setup.exe` | 下载后**双击运行**，按提示输入项目路径即可；若电脑上没有 Agent CLI，会自动优先安装 opencode |
+| Windows | `JiangNanSkills-Setup.exe` | 双击运行，按提示输入项目路径；无 Agent CLI 时自动优先安装 opencode |
 | macOS | `JiangNanSkills-macOS.dmg` | 打开 DMG，双击「江南技能安装.app」（或使用附带的 `jiangnan-skills` CLI） |
 
-打包内容为 CLI 版本，来源均为远程仓库（`bansenbingo/JiangNanNovel`），安装时自动拉取最新技能。
+全部版本见 [Releases 页面](https://github.com/bansenbingo/JiangNanNovel/releases)。打包内容为 CLI 版本，来源均为远程仓库（`bansenbingo/JiangNanNovel`），安装时自动拉取最新技能。
 
 **手动触发构建**：仓库 → Actions → `Build and Publish Release` → Run workflow（填入 tag 如 `v1.0.1`）；推送 `v*` tag 也会自动触发。
 
