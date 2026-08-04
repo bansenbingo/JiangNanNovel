@@ -67,22 +67,39 @@ JiangNanNovel/
 - 龙族人格：`/author-jiang-nan-longzu`
 - 天之炽人格：`/author-jiang-nan-tianzhichi`
 
+## Release 版本（Windows EXE / macOS DMG）
+
+GitHub Release 页面（仓库右侧 Releases）提供两个免配置的发行包，由 GitHub Actions 自动构建：
+
+| 平台 | 文件 | 使用方式 |
+|------|------|---------|
+| Windows | `JiangNanSkills-Setup.exe` | 下载后**双击运行**，按提示输入项目路径即可；若电脑上没有 Agent CLI，会自动优先安装 opencode |
+| macOS | `JiangNanSkills-macOS.dmg` | 打开 DMG，双击「江南技能安装.app」（或使用附带的 `jiangnan-skills` CLI） |
+
+打包内容为 CLI 版本，来源均为远程仓库（`bansenbingo/JiangNanNovel`），安装时自动拉取最新技能。
+
+**手动触发构建**：仓库 → Actions → `Build and Publish Release` → Run workflow（填入 tag 如 `v1.0.1`）；推送 `v*` tag 也会自动触发。
+
+**本地构建**：`bash tools/build_release/build_macos.sh`（macOS 产出 DMG）；Windows EXE 需在 Windows 上用 PyInstaller：
+`pyinstaller --onefile --console --name JiangNanSkills-Setup tools/install_jiangnan_skills.py`
+
 ## 一键安装技能到其他项目（tools/install_jiangnan_skills.py）
 
 默认情况下技能随本仓库生效。若要在**其他项目**中使用江南人格，运行：
 
 ```bash
-python3 tools/install_jiangnan_skills.py                 # 安装到当前目录
+python3 tools/install_jiangnan_skills.py                 # 交互模式（无参数双击/直接运行）
 python3 tools/install_jiangnan_skills.py --project ~/novels   # 安装到指定项目
 python3 tools/install_jiangnan_skills.py --uninstall      # 停用
 python3 tools/install_jiangnan_skills.py --list           # 查看技能清单
 ```
 
 特性：
-- **来源为远程仓库**：脚本自动从 GitHub 拉取最新技能（支持 `--repo`/`--branch`/`--offline` 指定来源）
+- **来源为远程仓库**：脚本自动从 GitHub 拉取最新技能（支持 `--repo`/`--branch`/`--offline` 指定来源；无 git 时自动改用 ZIP 下载）
 - **项目隔离**：只在运行脚本时指定的项目内激活，其他项目不受影响
-- **内容不入库**：技能实体仅存于系统缓存（`~/Library/Caches/JiangNanSkills`），项目内只是符号链接，并自动写入 `.gitignore`
+- **内容不入库**：技能实体仅存于系统缓存（macOS `~/Library/Caches/JiangNanSkills`，Windows `%LOCALAPPDATA%\JiangNanSkills`），项目内只是链接（macOS 符号链接 / Windows junction，无需管理员权限），并自动写入 `.gitignore`
 - **随用随停**：卸载或删除链接后 Agent 不再加载；更新技能只需重新运行脚本
+- **开箱即用**：本机无任何 Agent CLI 时，交互模式会优先自动安装 opencode
 
 ## 训练方法
 

@@ -1,1 +1,5 @@
 .DS_Store
+# Python 打包产物（release.yml / build_macos.sh 生成）
+build/
+dist/
+*.spec
