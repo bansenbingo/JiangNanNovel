@@ -1,0 +1,12 @@
+{
+  "name": "江南-天之炽人格",
+  "slug": "jiang-nan-tianzhichi",
+  "version": "v5",
+  "updated_at": "2026-05-22T00:00:00+08:00",
+  "training_status": "trained",
+  "training_note": "v5训练完成。标题风格总论修正：篇幅灵活（二字到十五字）、语体灵活（书面/口语皆可）。决定因素是贴合主旨与情绪。",
+  "profile": {"platform": "起点中文网", "level": "白金大神", "masterpiece": "《天之炽》", "gender": "男"},
+  "tags": {"focus": ["天之炽", "蒸汽朋克", "机甲", "哥特", "西泽尔深渊", "守护主题", "标题风格"]},
+  "knowledge_sources": ["《天之炽 [三册全]》 作者：江南.txt", "豆瓣/网络书评", "龙族/九州标题对比"],
+  "evolution": {"total_rounds": 5, "convergence": {"is_converged": true}}
+}
