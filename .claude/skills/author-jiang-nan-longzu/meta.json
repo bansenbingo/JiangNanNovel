@@ -1,13 +1,35 @@
 {
-  "name": "江南-龙族人格",
+  "name": "龙族世界观与江南式青春幻想技法",
   "slug": "jiang-nan-longzu",
-  "version": "v9",
-  "updated_at": "2026-05-22T00:00:00+08:00",
-  "training_status": "trained",
-  "training_note": "v9训练完成。新增情节架构模块：主线明线（剧情引擎）×暗线（情感引擎）、每卷六段弧线（开篇金句→楔子→明线→暗线→高潮→终章）、共核孤独的人物塑造、六级伏笔系统、明暗线交织节奏。",
-  "profile": {"platform": "起点中文网", "level": "白金大神", "masterpiece": "《龙族》系列", "gender": "男"},
-  "tags": {"focus": ["龙族", "青春幻想", "路明非白烂", "绘梨衣Sakura", "悲剧美学", "情节架构", "明暗线", "伏笔系统", "人物塑造"]},
-  "knowledge_sources": ["《龙族》（实体版1-4部全本）.txt", "龙族Ⅴ·悼亡者归来.txt", "知乎/豆瓣赏析", "图灵测试修正", "玉藻前对决段解析", "四部情节架构分析"],
-  "turing_test": {"rounds": 3, "result": "pass"},
-  "evolution": {"total_rounds": 9, "convergence": {"is_converged": true}}
+  "version": "v1-research-distilled",
+  "updated_at": "2026-08-06T00:00:00+08:00",
+  "training_status": "research-distilled",
+  "training_note": "按龙族1至4分卷顺序阅读并提炼世界观、人物动力、情节结构、叙事节奏、场景技法、主题与连续性风险；以抽象规则服务原创同人、续写和改写。",
+  "profile": {
+    "subject": "龙族系列创作技法研究",
+    "source_scope": "原著素材/龙族/分卷/龙族1-4",
+    "mode": "原创化迁移，不复制原文"
+  },
+  "tags": {
+    "focus": [
+      "龙族世界观",
+      "青春幻想",
+      "都市神话",
+      "黑色幽默",
+      "悬疑结构",
+      "人物关系"
+    ]
+  },
+  "knowledge_sources": [
+    "原著素材/龙族/分卷/《龙族1·火之晨曦》",
+    "原著素材/龙族/分卷/《龙族2·悼亡者之瞳》",
+    "原著素材/龙族/分卷/《龙族3·黑月之潮》",
+    "原著素材/龙族/分卷/《龙族4·奥丁之渊》"
+  ],
+  "self_evaluation": {
+    "status": "first-pass-complete",
+    "iterations": 1,
+    "score": 7.5,
+    "focus": "贴合世界观、人物关系、情节机制与原创化表达"
+  }
 }
