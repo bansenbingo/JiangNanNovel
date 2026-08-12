@@ -10,6 +10,27 @@
 基于龙族世界观写一个原创支线：地点是冬季海港，主角是第一次接触混血种社会的普通大学生。先给出卷纲，再写第一章，不复用原著事件和台词。
 ```
 
+## Python 与模型训练环境
+
+本项目统一使用 Conda 环境 `torch212-py310-cuda118`。该环境包含 PyTorch 2.1.2、CUDA 11.8，并已验证可使用 NVIDIA GeForce RTX 3090 Ti。运行 Python 工具或模型训练时，使用：
+
+```bash
+conda activate torch212-py310-cuda118
+python your_training_script.py
+```
+
+不依赖当前终端激活状态时，使用：
+
+```bash
+conda run -n torch212-py310-cuda118 python your_training_script.py
+```
+
+检查训练环境：
+
+```bash
+conda run -n torch212-py310-cuda118 python -c "import torch; print(torch.__version__, torch.version.cuda, torch.cuda.is_available(), torch.cuda.get_device_name(0))"
+```
+
 可发布技能包位于 `skills/`：`author-jiang-nan-longzu` 是龙族原创化写作包，包含 1—4 分卷蒸馏和 V 卷滚动留出审计；`novel-author-persona-distiller` 是通用蒸馏审计器。项目级聚合副本位于 `.claude/skills/`，可直接调用的作家配置位于龙族技能目录的 `writer_profile.md`，蒸馏审计位于 `distillation_report.md` 和 `holdout_audit.md`。安装脚本会把两个技能复制到用户级目录，适用于需要在其他项目中调用的场景：
 
 ```bash

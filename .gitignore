@@ -7,3 +7,6 @@ dist/
 素材索引.json
 论文文本/
 .pytest_cache/
+model/
+training/
+fuse/
