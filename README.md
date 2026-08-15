@@ -2,23 +2,56 @@
 
 ## 安装
 
-Skill 目录：`skills/celebrity/JiangNanNovel/`
+### 使用 Codex 安装（推荐）
 
-安装到 Codex：
+1. 打开 Codex，新建一个任务。
+2. 把下面这句话发送给 Codex：
 
-```bash
-mkdir -p ~/.codex/skills/JiangNanNovel
-cp -R skills/celebrity/JiangNanNovel/. ~/.codex/skills/JiangNanNovel/
+   ```text
+   使用 $skill-installer 从 https://github.com/bansenbingo/JiangNanNovel/tree/main/skills/celebrity/JiangNanNovel 安装 JiangNanNovel。
+   ```
+
+3. 安装完成后，在 Codex 中运行 `/skills`，或输入 `$JiangNanNovel`，确认 Skill 已出现。
+4. 如果没有立即出现，重启 Codex 后再次检查。
+
+开始使用时，可以直接输入：
+
+```text
+使用 $JiangNanNovel，帮我设计一部长篇原创小说。
 ```
 
-安装到 Claude Code：
+Skill 在 `SKILL.md` 中声明的名称是 `JiangNanNovel`。安装目标只是仓库中的 `skills/celebrity/JiangNanNovel/` 目录，`原著素材/` 不会被复制到 Skill 安装目录；安装器如何临时获取 GitHub 仓库内容由其实现决定。
+
+### 手动安装（备用）
+
+需要预先安装 [Git 2.25 或更高版本](https://git-scm.com/downloads)。以下命令用于首次安装，请在不含 `JiangNanNovel-repo` 子目录的位置执行。命令使用部分克隆和稀疏检出，只检出 Skill，并避免获取未检出的原著文件内容。
+
+macOS 或 Linux：
 
 ```bash
-mkdir -p ~/.claude/skills/JiangNanNovel
-cp -R skills/celebrity/JiangNanNovel/. ~/.claude/skills/JiangNanNovel/
+git clone --depth 1 --filter=blob:none --sparse \
+  https://github.com/bansenbingo/JiangNanNovel.git JiangNanNovel-repo
+git -C JiangNanNovel-repo sparse-checkout set skills/celebrity/JiangNanNovel
+mkdir -p "$HOME/.agents/skills"
+cp -R JiangNanNovel-repo/skills/celebrity/JiangNanNovel "$HOME/.agents/skills/JiangNanNovel"
+test -f "$HOME/.agents/skills/JiangNanNovel/SKILL.md" && echo "JiangNanNovel 安装成功"
 ```
 
-其他支持本地 Skill 的宿主，将整个 `JiangNanNovel` 目录复制到该宿主的 Skill 根目录即可。入口文件为 `SKILL.md`。
+Windows PowerShell：
+
+```powershell
+git clone --depth 1 --filter=blob:none --sparse `
+  https://github.com/bansenbingo/JiangNanNovel.git JiangNanNovel-repo
+git -C JiangNanNovel-repo sparse-checkout set skills/celebrity/JiangNanNovel
+New-Item -ItemType Directory -Force "$HOME\.agents\skills" | Out-Null
+Copy-Item -Recurse JiangNanNovel-repo\skills\celebrity\JiangNanNovel `
+  "$HOME\.agents\skills\JiangNanNovel"
+Test-Path "$HOME\.agents\skills\JiangNanNovel\SKILL.md"
+```
+
+手动安装后，在 Codex 中运行 `/skills` 或输入 `$JiangNanNovel` 进行验证；若未显示，请重启 Codex。Codex 会从 `$HOME/.agents/skills/JiangNanNovel/SKILL.md` 发现该 Skill。
+
+安装位置与发现规则参见 [OpenAI 官方 Codex Skills 文档](https://developers.openai.com/codex/skills/)。
 
 ## 训练与蒸馏方式
 
