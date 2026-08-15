@@ -1,71 +1,106 @@
-# JiangNanNovel
+# 江南原创小说创作 Skill
 
-这是一个面向原创化龙族同人创作的 OpenCode 项目级技能。它使用 `原著素材/龙族/分卷` 中的龙族 1-4 分卷、`参考资料` 中的研究论文，以及桌面 `JiangNan` 文件夹中的龙族专项人格存档作为内部研究材料，提炼世界观约束、叙事结构、人物动力和场景方法，不复制原著句子、段落或连续情节。
+## 安装
 
-## 使用
+Skill 目录：`skills/celebrity/JiangNanNovel/`
 
-将项目作为工作目录启动 OpenCode，然后直接提出创作任务，例如：
-
-```text
-基于龙族世界观写一个原创支线：地点是冬季海港，主角是第一次接触混血种社会的普通大学生。先给出卷纲，再写第一章，不复用原著事件和台词。
-```
-
-## Python 与模型训练环境
-
-本项目统一使用 Conda 环境 `torch212-py310-cuda118`。该环境包含 PyTorch 2.1.2、CUDA 11.8，并已验证可使用 NVIDIA GeForce RTX 3090 Ti。运行 Python 工具或模型训练时，使用：
+安装到 Codex：
 
 ```bash
-conda activate torch212-py310-cuda118
-python your_training_script.py
+mkdir -p ~/.codex/skills/JiangNanNovel
+cp -R skills/celebrity/JiangNanNovel/. ~/.codex/skills/JiangNanNovel/
 ```
 
-不依赖当前终端激活状态时，使用：
+安装到 Claude Code：
 
 ```bash
-conda run -n torch212-py310-cuda118 python your_training_script.py
+mkdir -p ~/.claude/skills/JiangNanNovel
+cp -R skills/celebrity/JiangNanNovel/. ~/.claude/skills/JiangNanNovel/
 ```
 
-检查训练环境：
+其他支持本地 Skill 的宿主，将整个 `JiangNanNovel` 目录复制到该宿主的 Skill 根目录即可。入口文件为 `SKILL.md`。
 
-```bash
-conda run -n torch212-py310-cuda118 python -c "import torch; print(torch.__version__, torch.version.cuda, torch.cuda.is_available(), torch.cuda.get_device_name(0))"
-```
+## 训练与蒸馏方式
 
-可发布技能包位于 `skills/`：`author-jiang-nan-longzu` 是龙族原创化写作包，包含 1—4 分卷蒸馏和 V 卷滚动留出审计；`novel-author-persona-distiller` 是通用蒸馏审计器。项目级聚合副本位于 `.claude/skills/`，可直接调用的作家配置位于龙族技能目录的 `writer_profile.md`，蒸馏审计位于 `distillation_report.md` 和 `holdout_audit.md`。安装脚本会把两个技能复制到用户级目录，适用于需要在其他项目中调用的场景：
+本 Skill 不是 LoRA、微调或模型权重训练产物，而是使用 `dot-skill` 完成的证据驱动人格与创作方法蒸馏：
 
-```bash
-python3 tools/install_jiangnan_skills.py --user
-```
+- Character family：`celebrity`
+- Research profile：`budget-unfriendly`
+- Collection strategy：`local-first`
+- Research cutoff：`2026-08-15`
 
-OpenCode 用户级安装：
+语料预处理流程：
 
-```bash
-python3 tools/install_jiangnan_skills.py --opencode
-```
+1. 读取 UTF-8、UTF-16、GB18030、Big5 等编码的 TXT。
+2. 删除网址、广告、下载站页脚、网页 UI、装饰分隔符和连续重复行。
+3. 以《龙族》《九州缥缈录》《天之炽》既有文本为参考基线，执行文件级、段落级和近似重复检测。
+4. 保留访谈、文论、序跋中独有的作者论述，只删除其中复制的小说正文。
+5. 将清洗语料按约 10,000 个非空白字符分卷，不跨作品分类强行拼接。
 
-## 研究边界
+处理结果：493 个输入 TXT，保留 447 个独有文本，生成 702 个分卷，共 7,044,907 个去重后非空白字符；分卷中位数 10,044，最大 11,564。
 
-- 原著用于提炼可迁移的叙事机制和设定逻辑，不用于逐字仿写。
-- 论文用于理解类型特征、东方化处理和研究视角，不把论文结论当作原著事实。
-- 生成内容应使用原创事件、原创配角、原创冲突和原创意象；使用既有角色时只保留必要的世界观锚点。
-- 用户要求“完全像原文”时，技能会转译为青春幻想、都市神话、黑色幽默、悬疑推进和关系驱动等高层特征。
+蒸馏研究分为六个独立轨道：著作与系统思考、即兴对话与压力应对、语言指纹、行为与选择、他者视角与批评、认知时间线。每条证据标注 1-7 级信源权重，并经过以下关卡：
 
-## 检查
+- Phase 1.5：六轨覆盖、来源与矛盾门槛确认。
+- Research audit：`PASS`；保守口径下一手来源 48/59（81%），权重 1-3 来源占 83%。
+- Phase 2.5：确认六个核心心智模型；“跨类型翻译”降为启发式，“从雄心到守诺”作为时间校准器。
+- Validation：3 个 known-answer 检查、1 个 edge-case 检查、约 100 字声纹盲测、版权检查和 Agentic Protocol 检查全部通过。
+- 最终 `budget-unfriendly` 质量检查：13/13 `PASS`。
 
-```bash
-python3 tools/install_jiangnan_skills.py --check
-```
+Skill 提炼的是现实缺口、制度化奇观、关系代价、结构与人物的相互修正、修订方法，以及作者/读者/商业之间的决策张力。它不复制原著段落、角色、专有设定或标志性句式，也不代表江南本人。
 
-生成不包含正文的素材元数据索引：
+## 蒸馏素材来源
 
-```bash
-python3 tools/build_material_index.py
-```
+### 本地文件
 
-索引只记录文件路径、类别、大小和 SHA-256，用于确认素材版本和定位来源；它不会把小说或论文正文复制进提示词、技能文件或索引。
+主要原著与参考基线：
 
-验证发布技能包：
+- `原著素材/江南/`：江南文字作品 TXT 全集，清洗前输入目录。
+- `原著素材/龙族/《龙族》（实体版1-4部全本）.txt`
+- `原著素材/龙族/龙族Ⅴ·悼亡者归来.txt`
+- `原著素材/九州缥缈录/九州缥缈录.txt`
+- `原著素材/天之炽/天之炽（三册全）.txt`
+- `原著素材/江南_清洗分卷/`：清洗文本、约万字分卷、manifest 和去重报告。
 
-```bash
-python3 tools/validate_skill_packages.py
-```
+重点作品样本：
+
+- `原著素材/江南_清洗分卷/cleaned/上海堡垒.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[04]其它长篇小说/《此间的少年》.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[04]其它长篇小说/《蝴蝶风暴Ⅰ：猎犬狐》.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[01]九州长篇小说/《九州飘零书·商博良》.txt`
+
+重点访谈、文论与序跋：
+
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[12]访谈录/《文学、创业和自我定位》.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[12]访谈录/《我的写作天赋并不比别人高——〈宁波晚报〉访谈》.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[12]访谈录/《中国作家富豪榜采访提纲》.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[08]文论/《一个优秀作者所不应具备的七种特征》.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[08]文论/《〈龙族Ⅲ〉创作手记》.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[10]序跋/《写一场修行——人民文学版〈九州缥缈录〉自序》.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[10]序跋/《〈上海堡垒〉——2016再版后记》.txt`
+- `原著素材/江南_清洗分卷/cleaned/江南作品合集/[06]散文随笔/《温故2015》.txt`
+
+外部批评文件（蒸馏时读取，精简仓库后不随 Skill 安装）：
+
+- `参考资料/奇幻小说的东方化——以江南的《龙族》为例-张猛.pdf`
+- `参考资料/玄幻小说的特征及发展现状初探——以江南的《龙族》为例-陈妍锦.pdf`
+
+### 已核验网页
+
+书目与版本锚点：
+
+- https://book.douban.com/subject/1321017/
+- https://book.douban.com/subject/4737329/
+- https://book.douban.com/subject/6434543/
+- https://book.douban.com/subject/25825717/
+- https://book.douban.com/subject/25997575/
+- https://book.douban.com/subject/26647621/
+
+长访谈与外部批评：
+
+- https://www.chinawriter.com.cn/n1/2018/0523/c405057-30006739.html
+- https://www.chinawriter.com.cn/n1/2020/1025/c405057-31905087.html
+- https://www.chinawriter.com.cn/n1/2020/1108/c405057-31923053.html
+- https://www.chinawriter.com.cn/n1/2025/1030/c404027-40592897.html
+
+研究笔记、来源权重、审计、综合与验证记录保存在 `skills/celebrity/JiangNanNovel/knowledge/research/`。
