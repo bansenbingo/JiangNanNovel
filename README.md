@@ -4,7 +4,7 @@
 
 ### 命令行安装与更新（推荐）
 
-安装器会扫描 `PATH` 中的 agent CLI，让你选择把 Skill 安装到哪个 agent。当前支持 Codex、Claude Code、Gemini CLI、OpenCode、Cursor Agent 和 GitHub Copilot CLI。只会下载 `skills/celebrity/JiangNanNovel/`，不会下载或安装 `原著素材/`。
+安装器会扫描 `PATH` 中的 agent CLI，让你选择把 Skill 安装到哪个 agent。当前支持 Codex、Claude Code、Gemini CLI、OpenCode、Cursor Agent 和 GitHub Copilot CLI。
 
 macOS：
 
