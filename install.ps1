@@ -45,13 +45,13 @@ function Get-DetectedAgents {
 
 function Show-DetectedAgents([array]$DetectedAgents) {
     if ($DetectedAgents.Count -eq 0) {
-        Write-Host 'No compatible agent CLI was found on PATH.'
+        Write-Output 'No compatible agent CLI was found on PATH.'
         return
     }
 
-    Write-Host 'Compatible agent CLIs found on PATH:'
+    Write-Output 'Compatible agent CLIs found on PATH:'
     for ($i = 0; $i -lt $DetectedAgents.Count; $i++) {
-        Write-Host ('  {0}. {1,-20} {2}' -f ($i + 1), $DetectedAgents[$i].Label, $DetectedAgents[$i].Root)
+        Write-Output ('  {0}. {1,-20} {2}' -f ($i + 1), $DetectedAgents[$i].Label, $DetectedAgents[$i].Root)
     }
 }
 
@@ -109,7 +109,7 @@ function Install-Skill([string]$Source, [string]$Revision, [pscustomobject]$Sele
     $destinationManifest = Get-TreeManifest $destination
     if ($null -ne $destinationManifest -and $sourceManifest -ceq $destinationManifest) {
         Set-Content -LiteralPath (Join-Path $destination $MarkerFile) -Value $Revision -Encoding ASCII
-        Write-Host "$SkillName is already up to date in $destination"
+        Write-Output "$SkillName is already up to date in $destination"
         return
     }
 
@@ -118,7 +118,7 @@ function Install-Skill([string]$Source, [string]$Revision, [pscustomobject]$Sele
 
     if (-not (Test-Path -LiteralPath $destination)) {
         Move-Item -LiteralPath $stage -Destination $destination
-        Write-Host "$SkillName installed for $($SelectedAgent.Label) at $destination"
+        Write-Output "$SkillName installed for $($SelectedAgent.Label) at $destination"
         return
     }
 
@@ -126,7 +126,7 @@ function Install-Skill([string]$Source, [string]$Revision, [pscustomobject]$Sele
     try {
         Move-Item -LiteralPath $stage -Destination $destination
         Remove-Item -LiteralPath $backup -Recurse -Force
-        Write-Host "$SkillName updated for $($SelectedAgent.Label) at $destination"
+        Write-Output "$SkillName updated for $($SelectedAgent.Label) at $destination"
     }
     catch {
         if (-not (Test-Path -LiteralPath $destination) -and (Test-Path -LiteralPath $backup)) {
@@ -161,7 +161,7 @@ New-Item -ItemType Directory -Path $tempRoot | Out-Null
 
 try {
     $repoPath = Join-Path $tempRoot 'repo'
-    Write-Host "Checking the latest $SkillName skill..."
+    Write-Output "Checking the latest $SkillName skill..."
     & git clone --quiet --depth 1 --filter=blob:none --sparse $RepoUrl $repoPath
     if ($LASTEXITCODE -ne 0) { throw "Unable to clone $RepoUrl" }
     & git -C $repoPath sparse-checkout set $SkillSubdir
@@ -178,7 +178,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Unable to read the downloaded revision.' }
 
     Install-Skill $source $revision $selectedAgent
-    Write-Host "Restart $($selectedAgent.Label) if the skill is not immediately visible."
+    Write-Output "Restart $($selectedAgent.Label) if the skill is not immediately visible."
 }
 finally {
     if (Test-Path -LiteralPath $tempRoot) {
