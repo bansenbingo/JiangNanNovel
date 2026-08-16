@@ -2,7 +2,35 @@
 
 ## 安装
 
-### 使用 Codex 安装（推荐）
+### 命令行安装与更新（推荐）
+
+安装器会扫描 `PATH` 中的 agent CLI，让你选择把 Skill 安装到哪个 agent。当前支持 Codex、Claude Code、Gemini CLI、OpenCode、Cursor Agent 和 GitHub Copilot CLI。只会下载 `skills/celebrity/JiangNanNovel/`，不会下载或安装 `原著素材/`。
+
+macOS：
+
+```bash
+curl -fsSL https://github.com/bansenbingo/JiangNanNovel/releases/latest/download/install.sh | bash
+```
+
+Windows PowerShell：
+
+```powershell
+irm https://github.com/bansenbingo/JiangNanNovel/releases/latest/download/install.ps1 | iex
+```
+
+再次运行同一脚本会比较 GitHub 上的最新 Skill：内容没有变化时报告已是最新版本，有变化时自动更新。也可以下载脚本后指定 agent，跳过交互选择：
+
+```bash
+bash install.sh --agent codex
+```
+
+```powershell
+.\install.ps1 -Agent codex
+```
+
+使用 `--list`（PowerShell 为 `-List`）可以查看扫描结果和安装目录。
+
+### 使用 Codex 内置安装器
 
 1. 打开 Codex，新建一个任务。
 2. 把下面这句话发送给 Codex：

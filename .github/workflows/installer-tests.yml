@@ -1,0 +1,66 @@
+name: Installer tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test shell installer
+        shell: bash
+        run: |
+          set -eu
+          test_root="$(mktemp -d)"
+          mkdir -p "$test_root/bin" "$test_root/home"
+          touch "$test_root/bin/codex"
+          chmod +x "$test_root/bin/codex"
+          test_path="$test_root/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+          first="$(HOME="$test_root/home" PATH="$test_path" JIANGNANNOVEL_REPO_URL="$GITHUB_WORKSPACE" ./install.sh --agent codex 2>&1)"
+          test -f "$test_root/home/.agents/skills/JiangNanNovel/SKILL.md"
+          printf '%s' "$first" | grep -q 'installed for Codex'
+
+          second="$(HOME="$test_root/home" PATH="$test_path" JIANGNANNOVEL_REPO_URL="$GITHUB_WORKSPACE" ./install.sh --agent codex 2>&1)"
+          printf '%s' "$second" | grep -q 'already up to date'
+
+          mv "$test_root/home/.agents/skills/JiangNanNovel/meta.json" "$test_root/home/meta.json"
+          third="$(HOME="$test_root/home" PATH="$test_path" JIANGNANNOVEL_REPO_URL="$GITHUB_WORKSPACE" ./install.sh --agent codex 2>&1)"
+          printf '%s' "$third" | grep -q 'updated for Codex'
+          test -f "$test_root/home/.agents/skills/JiangNanNovel/meta.json"
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test PowerShell installer
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $testRoot = Join-Path $env:RUNNER_TEMP 'jiangnannovel-installer-test'
+          $testHome = Join-Path $testRoot 'home'
+          $testBin = Join-Path $testRoot 'bin'
+          New-Item -ItemType Directory -Force -Path $testHome, $testBin | Out-Null
+          New-Item -ItemType File -Force -Path (Join-Path $testBin 'codex.cmd') | Out-Null
+          $env:PATH = "$testBin;$env:SystemRoot\System32;$env:ProgramFiles\Git\cmd"
+          $env:JIANGNANNOVEL_HOME = $testHome
+          $env:JIANGNANNOVEL_REPO_URL = $env:GITHUB_WORKSPACE
+
+          $first = & .\install.ps1 -Agent codex | Out-String
+          $destination = Join-Path $testHome '.agents\skills\JiangNanNovel'
+          if (-not (Test-Path (Join-Path $destination 'SKILL.md'))) { throw 'SKILL.md was not installed.' }
+          if ($first -notmatch 'installed for Codex') { throw "Unexpected first-run output: $first" }
+
+          $second = & .\install.ps1 -Agent codex | Out-String
+          if ($second -notmatch 'already up to date') { throw "Unexpected second-run output: $second" }
+
+          Move-Item (Join-Path $destination 'meta.json') (Join-Path $testHome 'meta.json')
+          $third = & .\install.ps1 -Agent codex | Out-String
+          if ($third -notmatch 'updated for Codex') { throw "Unexpected update output: $third" }
+          if (-not (Test-Path (Join-Path $destination 'meta.json'))) { throw 'Update did not restore meta.json.' }
