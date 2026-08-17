@@ -24,16 +24,20 @@ jobs:
           test_path="$test_root/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
           first="$(HOME="$test_root/home" PATH="$test_path" JIANGNANNOVEL_REPO_URL="$GITHUB_WORKSPACE" ./install.sh --agent codex 2>&1)"
-          test -f "$test_root/home/.agents/skills/JiangNanNovel/SKILL.md"
+          destination="$test_root/home/.agents/skills/JiangNanNovel"
+          test -f "$destination/SKILL.md"
+          test -f "$destination/JiangNanNovel/SKILL.md"
+          test -f "$destination/characters/lu_mingfei/SKILL.md"
+          test "$(find "$destination/characters" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')" -eq 19
           printf '%s' "$first" | grep -q 'installed for Codex'
 
           second="$(HOME="$test_root/home" PATH="$test_path" JIANGNANNOVEL_REPO_URL="$GITHUB_WORKSPACE" ./install.sh --agent codex 2>&1)"
           printf '%s' "$second" | grep -q 'already up to date'
 
-          mv "$test_root/home/.agents/skills/JiangNanNovel/meta.json" "$test_root/home/meta.json"
+          mv "$destination/JiangNanNovel/meta.json" "$test_root/home/meta.json"
           third="$(HOME="$test_root/home" PATH="$test_path" JIANGNANNOVEL_REPO_URL="$GITHUB_WORKSPACE" ./install.sh --agent codex 2>&1)"
           printf '%s' "$third" | grep -q 'updated for Codex'
-          test -f "$test_root/home/.agents/skills/JiangNanNovel/meta.json"
+          test -f "$destination/JiangNanNovel/meta.json"
 
   windows:
     runs-on: windows-latest
@@ -55,12 +59,16 @@ jobs:
           $first = & .\install.ps1 -Agent codex | Out-String
           $destination = Join-Path $testHome '.agents\skills\JiangNanNovel'
           if (-not (Test-Path (Join-Path $destination 'SKILL.md'))) { throw 'SKILL.md was not installed.' }
+          if (-not (Test-Path (Join-Path $destination 'JiangNanNovel\SKILL.md'))) { throw 'Author Skill was not installed.' }
+          if (-not (Test-Path (Join-Path $destination 'characters\lu_mingfei\SKILL.md'))) { throw 'Character Skills were not installed.' }
+          $characterSkills = @(Get-ChildItem (Join-Path $destination 'characters') -Recurse -Filter 'SKILL.md')
+          if ($characterSkills.Count -ne 19) { throw "Expected 19 character Skills, found $($characterSkills.Count)." }
           if ($first -notmatch 'installed for Codex') { throw "Unexpected first-run output: $first" }
 
           $second = & .\install.ps1 -Agent codex | Out-String
           if ($second -notmatch 'already up to date') { throw "Unexpected second-run output: $second" }
 
-          Move-Item (Join-Path $destination 'meta.json') (Join-Path $testHome 'meta.json')
+          Move-Item (Join-Path $destination 'JiangNanNovel\meta.json') (Join-Path $testHome 'meta.json')
           $third = & .\install.ps1 -Agent codex | Out-String
           if ($third -notmatch 'updated for Codex') { throw "Unexpected update output: $third" }
-          if (-not (Test-Path (Join-Path $destination 'meta.json'))) { throw 'Update did not restore meta.json.' }
+          if (-not (Test-Path (Join-Path $destination 'JiangNanNovel\meta.json'))) { throw 'Update did not restore meta.json.' }

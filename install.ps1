@@ -8,9 +8,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$InstallerVersion = '1.1.0'
+$InstallerVersion = '1.2.0'
 $SkillName = 'JiangNanNovel'
-$SkillSubdir = 'skills/celebrity/JiangNanNovel'
+$SkillSubdir = 'skill'
 $DefaultRepoUrl = 'https://github.com/bansenbingo/JiangNanNovel.git'
 $RepoUrl = if ($env:JIANGNANNOVEL_REPO_URL) { $env:JIANGNANNOVEL_REPO_URL } else { $DefaultRepoUrl }
 $AgentHome = if ($env:JIANGNANNOVEL_HOME) { $env:JIANGNANNOVEL_HOME } else { $HOME }
@@ -18,7 +18,7 @@ $MarkerFile = '.jiangnannovel-revision'
 
 function Show-Usage {
     @'
-Install or update the JiangNanNovel skill for a locally installed agent CLI.
+Install or update the complete JiangNanNovel skill bundle for a local agent CLI.
 
 Usage:
   .\install.ps1 [-Agent AGENT]
@@ -26,7 +26,7 @@ Usage:
   .\install.ps1 -Version
 
 Without -Agent, the script scans PATH and prompts when multiple agents exist.
-Run the same command again to check for and install skill updates.
+Run the same command again to check for and install bundle updates.
 '@
 }
 
@@ -161,19 +161,23 @@ New-Item -ItemType Directory -Path $tempRoot | Out-Null
 
 try {
     $repoPath = Join-Path $tempRoot 'repo'
-    Write-Output "Checking the latest $SkillName skill..."
+    Write-Output "Checking the latest $SkillName skill bundle..."
     & git clone --quiet --depth 1 --filter=blob:none --sparse $RepoUrl $repoPath
     if ($LASTEXITCODE -ne 0) { throw "Unable to clone $RepoUrl" }
     & git -C $repoPath sparse-checkout set $SkillSubdir
     if ($LASTEXITCODE -ne 0) { throw "Unable to fetch $SkillSubdir" }
 
-    $source = $repoPath
-    foreach ($pathPart in $SkillSubdir.Split('/')) {
-        $source = Join-Path $source $pathPart
-    }
+    $source = Join-Path $repoPath $SkillSubdir
     if (-not (Test-Path -LiteralPath (Join-Path $source 'SKILL.md') -PathType Leaf)) {
-        throw 'The downloaded skill does not contain SKILL.md.'
+        throw 'The downloaded bundle does not contain its root SKILL.md.'
     }
+    if (-not (Test-Path -LiteralPath (Join-Path $source 'JiangNanNovel\SKILL.md') -PathType Leaf)) {
+        throw 'The downloaded bundle does not contain the author Skill.'
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $source 'characters\lu_mingfei\SKILL.md') -PathType Leaf)) {
+        throw 'The downloaded bundle does not contain its character Skills.'
+    }
+
     $revision = (& git -C $repoPath rev-parse HEAD).Trim()
     if ($LASTEXITCODE -ne 0) { throw 'Unable to read the downloaded revision.' }
 

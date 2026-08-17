@@ -2,16 +2,16 @@
 
 set -eu
 
-INSTALLER_VERSION="1.1.0"
+INSTALLER_VERSION="1.2.0"
 SKILL_NAME="JiangNanNovel"
-SKILL_SUBDIR="skills/celebrity/JiangNanNovel"
+SKILL_SUBDIR="skill"
 DEFAULT_REPO_URL="https://github.com/bansenbingo/JiangNanNovel.git"
 REPO_URL="${JIANGNANNOVEL_REPO_URL:-$DEFAULT_REPO_URL}"
 MARKER_FILE=".jiangnannovel-revision"
 
 usage() {
   cat <<'EOF'
-Install or update the JiangNanNovel skill for a locally installed agent CLI.
+Install or update the complete JiangNanNovel skill bundle for a local agent CLI.
 
 Usage:
   install.sh [--agent AGENT]
@@ -25,7 +25,7 @@ Options:
   -h, --help     Show this help.
 
 Without --agent, the script scans PATH and prompts when multiple agents exist.
-Run the same command again to check for and install skill updates.
+Run the same command again to check for and install bundle updates.
 EOF
 }
 
@@ -197,12 +197,14 @@ command_exists git || die "Git 2.25 or newer is required."
 TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/jiangnannovel.XXXXXX")"
 trap 'rm -rf "$TMP_DIR"' EXIT HUP INT TERM
 
-printf 'Checking the latest %s skill...\n' "$SKILL_NAME"
+printf 'Checking the latest %s skill bundle...\n' "$SKILL_NAME"
 git clone --quiet --depth 1 --filter=blob:none --sparse "$REPO_URL" "$TMP_DIR/repo" || die "Unable to clone $REPO_URL"
 git -C "$TMP_DIR/repo" sparse-checkout set "$SKILL_SUBDIR" || die "Unable to fetch $SKILL_SUBDIR"
 
 SOURCE_DIR="$TMP_DIR/repo/$SKILL_SUBDIR"
-[ -f "$SOURCE_DIR/SKILL.md" ] || die "The downloaded skill does not contain SKILL.md."
+[ -f "$SOURCE_DIR/SKILL.md" ] || die "The downloaded bundle does not contain its root SKILL.md."
+[ -f "$SOURCE_DIR/JiangNanNovel/SKILL.md" ] || die "The downloaded bundle does not contain the author Skill."
+[ -f "$SOURCE_DIR/characters/lu_mingfei/SKILL.md" ] || die "The downloaded bundle does not contain its character Skills."
 REVISION="$(git -C "$TMP_DIR/repo" rev-parse HEAD)"
 
 install_skill "$SOURCE_DIR" "$REVISION" "${AGENT_ROOTS[$SELECTED_INDEX]}"

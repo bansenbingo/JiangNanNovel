@@ -1,0 +1,213 @@
+{
+  "name": "苏茜",
+  "display_name": "苏茜（龙族人物）",
+  "character": "celebrity",
+  "research_profile": "budget-unfriendly",
+  "summary": "苏茜的非官方、非商用、AIGC 虚构人物人格与场景运行 Skill；依据本地《龙族》分卷正文蒸馏。",
+  "classification": {
+    "language": "zh-CN",
+    "gallery_category": "Fictional Character",
+    "tags": [
+      "龙族",
+      "虚构人物",
+      "人格蒸馏",
+      "非商用同人",
+      "AIGC"
+    ]
+  },
+  "source_context": {
+    "domain": "fictional_literature",
+    "relationship_to_user": "licensed_noncommercial_fan_creation",
+    "is_real_person": false,
+    "is_public_figure": false,
+    "is_fictional": true
+  },
+  "profile": {
+    "identity": "《龙族》虚构人物人格与场景行为协议",
+    "known_for": "理解而不占有；温和现实校准；两段真实人生的伦理冲突",
+    "evidence_span": "1-5",
+    "aliases": [
+      "苏茜",
+      "狮心会副会长"
+    ]
+  },
+  "tags": [
+    "dragon-raja",
+    "su_qian",
+    "budget-unfriendly",
+    "local-primary-corpus"
+  ],
+  "knowledge_sources": [
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(2).txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_09.txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(4).txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_03.txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(2).txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_09.txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(4).txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_09.txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(2).txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_03.txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族1·火之晨曦》(2).txt",
+    "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_09.txt"
+  ],
+  "rights_context": {
+    "official": false,
+    "commercial_use": false,
+    "aigc": true,
+    "notice": "经用户声明，创作者与江南工作室已书面联系并获许可；本仓库产物仍固定标注非官方、非商用、AIGC。"
+  },
+  "local_source_adaptation": {
+    "external_url_floor": "not_applicable",
+    "primary_scene_anchors": 12,
+    "reason": "虚构人物直接以用户提供的本地原著分卷为最高权重一手证据，不伪造 URL。"
+  },
+  "type": "celebrity",
+  "lifecycle": {
+    "status": "active",
+    "created_at": "2026-08-17T09:59:45.946964+00:00",
+    "updated_at": "2026-08-17T09:59:45.946964+00:00",
+    "version": "v1"
+  },
+  "generation": {
+    "engine": "dot-skill",
+    "character": "celebrity",
+    "research_profile": "budget-unfriendly",
+    "preset": "dot.celebrity.v1",
+    "prompt_bundle": {
+      "preset": "dot.celebrity.v1",
+      "intake": "prompts/celebrity/intake.md",
+      "research": "prompts/celebrity/research.md",
+      "work_analyzer": "prompts/work_analyzer.md",
+      "persona_analyzer": "prompts/celebrity/persona_analyzer.md",
+      "work_builder": "prompts/work_builder.md",
+      "persona_builder": "prompts/celebrity/persona_builder.md",
+      "merger": "prompts/celebrity/merger.md",
+      "correction_handler": "prompts/correction_handler.md"
+    },
+    "research_profile_bundle": {
+      "research": "prompts/celebrity/budget_unfriendly/research.md",
+      "audit": "prompts/celebrity/budget_unfriendly/audit.md",
+      "synthesis": "prompts/celebrity/budget_unfriendly/synthesis.md",
+      "validation": "prompts/celebrity/budget_unfriendly/validation.md",
+      "persona_analyzer": "prompts/celebrity/budget_unfriendly/persona_analyzer.md",
+      "persona_builder": "prompts/celebrity/budget_unfriendly/persona_builder.md"
+    },
+    "research_profile_references": [
+      "references/celebrity_budget_unfriendly_framework.md",
+      "references/celebrity_budget_unfriendly_template.md"
+    ],
+    "merge_strategy": "deep",
+    "quality_profile": "budget-unfriendly",
+    "knowledge_dirs": [
+      "docs",
+      "messages",
+      "emails",
+      "research/raw",
+      "research/merged",
+      "research/reviews",
+      "transcripts",
+      "subtitles"
+    ],
+    "storage_root": "skill/characters",
+    "research_tools": {
+      "subtitle_downloader": "tools/research/download_subtitles.sh",
+      "subtitle_cleaner": "tools/research/srt_to_transcript.py",
+      "research_merger": "tools/research/merge_research.py",
+      "quality_check": "tools/research/quality_check.py"
+    },
+    "created_from": [
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(2).txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_09.txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(4).txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_03.txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(2).txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_09.txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(4).txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_09.txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族2·悼亡者之瞳》(2).txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_03.txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/《龙族1·火之晨曦》(2).txt",
+      "/Users/teddyjiang/Documents/GitHub/JiangNanNovel/原著素材/龙族/分卷/龙族V_分卷/龙族V_09.txt"
+    ],
+    "corrections_count": 0
+  },
+  "engine": {
+    "name": "dot-skill",
+    "kind": "meta-skill",
+    "character": "celebrity",
+    "research_profile": "budget-unfriendly",
+    "preset": "dot.celebrity.v1",
+    "prompt_bundle": {
+      "preset": "dot.celebrity.v1",
+      "intake": "prompts/celebrity/intake.md",
+      "research": "prompts/celebrity/research.md",
+      "work_analyzer": "prompts/work_analyzer.md",
+      "persona_analyzer": "prompts/celebrity/persona_analyzer.md",
+      "work_builder": "prompts/work_builder.md",
+      "persona_builder": "prompts/celebrity/persona_builder.md",
+      "merger": "prompts/celebrity/merger.md",
+      "correction_handler": "prompts/correction_handler.md"
+    },
+    "research_profile_bundle": {
+      "research": "prompts/celebrity/budget_unfriendly/research.md",
+      "audit": "prompts/celebrity/budget_unfriendly/audit.md",
+      "synthesis": "prompts/celebrity/budget_unfriendly/synthesis.md",
+      "validation": "prompts/celebrity/budget_unfriendly/validation.md",
+      "persona_analyzer": "prompts/celebrity/budget_unfriendly/persona_analyzer.md",
+      "persona_builder": "prompts/celebrity/budget_unfriendly/persona_builder.md"
+    },
+    "research_profile_references": [
+      "references/celebrity_budget_unfriendly_framework.md",
+      "references/celebrity_budget_unfriendly_template.md"
+    ],
+    "merge_strategy": "deep",
+    "quality_profile": "budget-unfriendly",
+    "knowledge_dirs": [
+      "docs",
+      "messages",
+      "emails",
+      "research/raw",
+      "research/merged",
+      "research/reviews",
+      "transcripts",
+      "subtitles"
+    ],
+    "storage_root": "skill/characters",
+    "research_tools": {
+      "subtitle_downloader": "tools/research/download_subtitles.sh",
+      "subtitle_cleaner": "tools/research/srt_to_transcript.py",
+      "research_merger": "tools/research/merge_research.py",
+      "quality_check": "tools/research/quality_check.py"
+    }
+  },
+  "schema_version": "3",
+  "slug": "su_qian",
+  "kind": "meta-skill",
+  "subtype": null,
+  "preset": "dot.celebrity.v1",
+  "id": "meta-skill.celebrity.su_qian",
+  "artifacts": {
+    "combined_skill": "SKILL.md",
+    "work_skill": "work_skill.md",
+    "persona_skill": "persona_skill.md",
+    "work_doc": "work.md",
+    "persona_doc": "persona.md",
+    "manifest": "manifest.json",
+    "combined_name": "celebrity_su_qian",
+    "work_name": "celebrity_su_qian_work",
+    "persona_name": "celebrity_su_qian_persona",
+    "combined_command": "celebrity-su-qian",
+    "work_command": "celebrity-su-qian-work",
+    "persona_command": "celebrity-su-qian-persona"
+  },
+  "compat": {
+    "legacy_command": "/create-icon",
+    "legacy_storage_root": "skill/characters",
+    "legacy_type": "celebrity"
+  },
+  "created_at": "2026-08-17T09:59:45.946964+00:00",
+  "updated_at": "2026-08-17T09:59:45.946964+00:00",
+  "version": "v1",
+  "corrections_count": 0
+}
