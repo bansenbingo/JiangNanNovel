@@ -8,9 +8,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$InstallerVersion = '1.2.0'
+$InstallerVersion = '1.3.0'
 $SkillName = 'JiangNanNovel'
-$SkillSubdir = 'skill'
+$SkillSubdir = 'skills'
 $DefaultRepoUrl = 'https://github.com/bansenbingo/JiangNanNovel.git'
 $RepoUrl = if ($env:JIANGNANNOVEL_REPO_URL) { $env:JIANGNANNOVEL_REPO_URL } else { $DefaultRepoUrl }
 $AgentHome = if ($env:JIANGNANNOVEL_HOME) { $env:JIANGNANNOVEL_HOME } else { $HOME }
@@ -170,6 +170,12 @@ try {
     $source = Join-Path $repoPath $SkillSubdir
     if (-not (Test-Path -LiteralPath (Join-Path $source 'SKILL.md') -PathType Leaf)) {
         throw 'The downloaded bundle does not contain its root SKILL.md.'
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $source 'novel-source-compressor\SKILL.md') -PathType Leaf)) {
+        throw 'The downloaded bundle does not contain the source compressor Skill.'
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $source 'novel-continuation-outline\SKILL.md') -PathType Leaf)) {
+        throw 'The downloaded bundle does not contain the outline planning Skill.'
     }
     if (-not (Test-Path -LiteralPath (Join-Path $source 'JiangNanNovel\SKILL.md') -PathType Leaf)) {
         throw 'The downloaded bundle does not contain the author Skill.'

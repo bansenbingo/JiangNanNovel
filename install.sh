@@ -2,9 +2,9 @@
 
 set -eu
 
-INSTALLER_VERSION="1.2.0"
+INSTALLER_VERSION="1.3.0"
 SKILL_NAME="JiangNanNovel"
-SKILL_SUBDIR="skill"
+SKILL_SUBDIR="skills"
 DEFAULT_REPO_URL="https://github.com/bansenbingo/JiangNanNovel.git"
 REPO_URL="${JIANGNANNOVEL_REPO_URL:-$DEFAULT_REPO_URL}"
 MARKER_FILE=".jiangnannovel-revision"
@@ -203,6 +203,8 @@ git -C "$TMP_DIR/repo" sparse-checkout set "$SKILL_SUBDIR" || die "Unable to fet
 
 SOURCE_DIR="$TMP_DIR/repo/$SKILL_SUBDIR"
 [ -f "$SOURCE_DIR/SKILL.md" ] || die "The downloaded bundle does not contain its root SKILL.md."
+[ -f "$SOURCE_DIR/novel-source-compressor/SKILL.md" ] || die "The downloaded bundle does not contain the source compressor Skill."
+[ -f "$SOURCE_DIR/novel-continuation-outline/SKILL.md" ] || die "The downloaded bundle does not contain the outline planning Skill."
 [ -f "$SOURCE_DIR/JiangNanNovel/SKILL.md" ] || die "The downloaded bundle does not contain the author Skill."
 [ -f "$SOURCE_DIR/characters/lu_mingfei/SKILL.md" ] || die "The downloaded bundle does not contain its character Skills."
 REVISION="$(git -C "$TMP_DIR/repo" rev-parse HEAD)"

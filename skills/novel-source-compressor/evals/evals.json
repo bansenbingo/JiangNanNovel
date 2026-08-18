@@ -1,0 +1,40 @@
+{
+  "skill_name": "novel-source-compressor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "请读取 evals/files/sample-novel.md。我要把这部未完成的原创小说交给上一个 novel-continuation-outline 技能继续规划。请使用 handoff-compress：压缩原文，但保留人物选择、信息差、时间线、规则、伏笔和最后稳定点；输出可直接复制的 source_outline_state，不要续写正文。",
+      "expected_output": "输出压缩版本头、事实/推演/未知边界、卷章结构、人物与关系、连续性账本、伏笔状态，以及兼容上一个技能的 source_outline_state；末尾应从第四章中断处给出可继续规划的状态和至少两个下一步候选。",
+      "files": ["evals/files/sample-novel.md"],
+      "expectations": [
+        "保留沈砚把返程票给阿梨、走向井边这一关键选择及其代价",
+        "记录灯塔镇规则、怀表指向和第十七班等可追踪伏笔",
+        "输出包含 source_outline_state、ending_or_last_stable_point 和 next_scene_candidates",
+        "不把第五章或父亲真实身份编成已经发生的原文事实"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "不使用 novel-continuation-outline。请把 evals/files/sample-novel.md 压缩成一份较为完整、可以独立交给编剧使用的小说大纲。需要有故事核心、四章结构、主要人物弧、世界规则、时间线、伏笔回收和当前未完结点；可以合并重复叙述，但不要写成书评，也不要替原文补写结局。",
+      "expected_output": "输出 standalone-outline，粒度比普通摘要更完整，能重建四章因果和人物关系；所有未写结局标为未决，不虚构第五章。",
+      "files": ["evals/files/sample-novel.md"],
+      "expectations": [
+        "按四章保留入口状态、关键选择和出口状态",
+        "列出沈砚、阿梨、陆川、父亲或周姨的行为弧与关系变化",
+        "明确小说在第四章中断，未完成结局不能伪装成原文事实"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "下面是上一版 source_outline_state 的尾部：已知沈砚在井边选择留下，阿梨带着唯一返程票离开；怀表被认为是记录车次的物件，但父亲身份和灯塔代价仍未知。现在新增 evals/files/sample-new-chapter.md。请使用 incremental-merge，只合并新增内容和受影响的连续性账本，标出 added/revised/conflicting/deprecated，并生成新的 source_outline_state 供续写规划使用。",
+      "expected_output": "只合并第五章及其影响窗口，更新父亲、怀表、列车规则、阿梨关系和新信封；保留旧版状态变化记录，标记与旧推测冲突的部分，不重写整本摘要。",
+      "files": ["evals/files/sample-new-chapter.md"],
+      "expectations": [
+        "输出 change_log 并区分 added、revised、conflicting 或 deprecated",
+        "保留怀表不是单纯钥匙、父亲被列车带走和第二只空信封等新状态",
+        "说明旧版‘阿梨带票离开’如何被第五章修正或确认",
+        "新的交接状态仍包含未决线程和下一步压力"
+      ]
+    }
+  ]
+}

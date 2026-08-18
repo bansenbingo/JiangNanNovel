@@ -1,0 +1,57 @@
+source_outline_state:
+  version: "source-v0.3"
+  source_scope: "龙族同人草稿第1-12章，末尾存档点"
+  source_status: "unfinished"
+  mode: "handoff-compress"
+  compression_depth: "standard"
+  confidence: "medium"
+  locked_facts:
+    - "主角在任务后没有回学院，带着孩子进入南方小城"
+    - "孩子身份尚未揭示，但执行部正在寻找他"
+  user_constraints:
+    - "保留主角与孩子之间刚建立的照护关系"
+  inferred_items:
+    - "孩子可能是某项实验的证据，但不能当成原作事实"
+  unknowns_and_conflicts:
+    - "执行部追捕命令的真实来源"
+  story_engine:
+    logline: "一个不想再被当作武器的人，带着必须被交回的孩子逃进普通生活"
+    central_choice: "回到学院换取安全，或承担孩子与小城的风险"
+  timeline_anchor:
+    last_stable_point: "主角在小城诊所关门前收到追捕通知"
+  segment_outline:
+    - "逃离学院"
+    - "小城伪装生活"
+    - "追捕逼近"
+  character_states:
+    - "主角：疲惫、隐瞒身份、刚开始照护孩子"
+    - "孩子：不会解释自己的过去，只对主角的口哨有反应"
+  relationship_deltas:
+    - "主角从临时保护者变成孩子唯一愿意跟随的人"
+  world_rules:
+    - "执行部可以通过任务记录追踪异常血统"
+  continuity_ledger:
+    resources: ["一辆旧车", "诊所后门", "半份假证件"]
+  open_threads:
+    - "孩子身份"
+    - "追捕命令来源"
+  promises:
+    - "主角必须决定是否让孩子拥有普通名字"
+  payoffs: []
+  ending_or_last_stable_point:
+    source_location: "第12章末"
+    state: "追捕通知送达，孩子第一次主动拉住主角"
+    unresolved_pressure: ["今晚是否逃离小城", "是否联系学院旧友"]
+  next_scene_candidates:
+    - option: "留在诊所迎接追兵"
+      benefit: "保护刚建立的日常"
+      tradeoff: "身份暴露"
+    - option: "连夜离开小城"
+      benefit: "暂时避开追捕"
+      tradeoff: "孩子失去稳定照护"
+  traceability:
+    - claim: "执行部正在寻找孩子"
+      evidence: "第12章追捕通知"
+      confidence: "high"
+  compression_risks:
+    - "孩子身份是推演，不应直接写成龙族血统"

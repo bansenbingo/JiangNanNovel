@@ -1,6 +1,6 @@
 # 江南原创小说创作 Skill
 
-JiangNanNovel 是一个基于江南公开作品、访谈、文论、外部批评与《龙族》本地分卷语料蒸馏的小说创作 Skill 包。`v1.2.0` 同时包含作者级创作方法和 19 个主要人物的人格/场景 Skill；创作时先加载作者层，再按人物别名自动路由到对应人物层。
+JiangNanNovel 是一个基于江南公开作品、访谈、文论、外部批评与《龙族》本地分卷语料蒸馏的小说创作 Skill 包。`v1.3.0` 同时包含作者级创作方法、19 个主要人物的人格/场景 Skill，以及原文压缩和续写/改写大纲规划模块；创作时先加载作者层，再按人物别名自动路由到对应人物层。
 
 > **使用声明**
 >
@@ -42,7 +42,7 @@ bash install.sh --agent codex
 2. 把下面这句话发送给 Codex：
 
    ```text
-   使用 $skill-installer 从 https://github.com/bansenbingo/JiangNanNovel/tree/main/skill 安装 JiangNanNovel。
+   使用 $skill-installer 从 https://github.com/bansenbingo/JiangNanNovel/tree/main/skills 安装 JiangNanNovel。
    ```
 
 3. 安装完成后，在 Codex 中运行 `/skills`，或输入 `$JiangNanNovel`，确认 Skill 已出现。
@@ -54,20 +54,20 @@ bash install.sh --agent codex
 使用 $JiangNanNovel，帮我设计一部长篇原创小说。
 ```
 
-从 `v1.2.0` 起，安装目标是仓库中的完整 `skill/` 包，而不是旧版的 `skills/celebrity/JiangNanNovel/` 单目录。完整包包含作者层、人物层及二者之间的相对路由；只复制 `skill/JiangNanNovel/` 会导致人物依赖缺失。`原著素材/` 不会被复制到 agent 的 Skill 安装目录。
+从 `v1.3.0` 起，安装目标是仓库中的完整 `skills/` 包；`v1.2.0` 使用的旧版 `skill/` 包仍可通过更新安装器迁移。完整包包含作者层、人物层及二者之间的相对路由；只复制 `skills/JiangNanNovel/` 会导致人物依赖缺失。`原著素材/` 不会被复制到 agent 的 Skill 安装目录。
 
 ### 手动安装（备用）
 
-需要预先安装 [Git 2.25 或更高版本](https://git-scm.com/downloads)。以下命令用于首次安装，请在不含 `JiangNanNovel-repo` 子目录的位置执行。命令使用部分克隆和稀疏检出，只检出可安装的 `skill/` 包。
+需要预先安装 [Git 2.25 或更高版本](https://git-scm.com/downloads)。以下命令用于首次安装，请在不含 `JiangNanNovel-repo` 子目录的位置执行。命令使用部分克隆和稀疏检出，只检出可安装的 `skills/` 包。
 
 macOS 或 Linux：
 
 ```bash
 git clone --depth 1 --filter=blob:none --sparse \
   https://github.com/bansenbingo/JiangNanNovel.git JiangNanNovel-repo
-git -C JiangNanNovel-repo sparse-checkout set skill
+git -C JiangNanNovel-repo sparse-checkout set skills
 mkdir -p "$HOME/.agents/skills"
-cp -R JiangNanNovel-repo/skill "$HOME/.agents/skills/JiangNanNovel"
+cp -R JiangNanNovel-repo/skills "$HOME/.agents/skills/JiangNanNovel"
 test -f "$HOME/.agents/skills/JiangNanNovel/SKILL.md" && echo "JiangNanNovel 安装成功"
 ```
 
@@ -76,9 +76,9 @@ Windows PowerShell：
 ```powershell
 git clone --depth 1 --filter=blob:none --sparse `
   https://github.com/bansenbingo/JiangNanNovel.git JiangNanNovel-repo
-git -C JiangNanNovel-repo sparse-checkout set skill
+git -C JiangNanNovel-repo sparse-checkout set skills
 New-Item -ItemType Directory -Force "$HOME\.agents\skills" | Out-Null
-Copy-Item -Recurse JiangNanNovel-repo\skill `
+Copy-Item -Recurse JiangNanNovel-repo\skills `
   "$HOME\.agents\skills\JiangNanNovel"
 Test-Path "$HOME\.agents\skills\JiangNanNovel\SKILL.md"
 ```
@@ -88,8 +88,14 @@ Test-Path "$HOME\.agents\skills\JiangNanNovel\SKILL.md"
 ## Skill 包结构
 
 ```text
-skill/
+skills/
 ├── SKILL.md                  # 可安装入口
+├── novel-continuation-outline/ # 续写/改写大纲规划与交接协议
+│   ├── SKILL.md
+│   └── references/
+├── novel-source-compressor/   # 原文压缩、来源锚点与 source_outline_state
+│   ├── SKILL.md
+│   └── references/
 ├── JiangNanNovel/            # 作者人格与小说创作方法
 │   ├── SKILL.md
 │   └── knowledge/
@@ -105,10 +111,12 @@ skill/
 
 运行顺序：
 
-1. 包级入口读取 `JiangNanNovel/SKILL.md`，加载作者级结构、镜头、节奏、以乐写哀和“公共胜利 / 私人空缺”方法。
-2. 场景出现收录人物时，根据 `JiangNanNovel/knowledge/character-routing.md` 读取对应 `characters/<slug>/SKILL.md`。
-3. 多人物场景分别计算每个人的信息、目标、底线、关系状态与代价，再由场景事实仲裁，不生成统一声线。
-4. 未收录人物回查一手正文，不使用性格相近人物代替。
+1. 从长篇原文、章节或草稿中提取续写依据时，读取 `novel-source-compressor/SKILL.md`，压缩为带来源锚点的 `source_outline_state`。
+2. 续写、改写、分支或未完稿修复需要定路线时，读取 `novel-continuation-outline/SKILL.md`，通过少量高杠杆提问生成 `outline_state`。
+3. 包级入口读取 `JiangNanNovel/SKILL.md`，加载作者级结构、镜头、节奏、以乐写哀和“公共胜利 / 私人空缺”方法。
+4. 场景出现收录人物时，根据 `JiangNanNovel/knowledge/character-routing.md` 读取对应 `characters/<slug>/SKILL.md`。
+5. 多人物场景分别计算每个人的信息、目标、底线、关系状态与代价，再由场景事实仲裁，不生成统一声线。
+6. 未收录人物回查一手正文，不使用性格相近人物代替。
 
 当前人物层覆盖：路明非、楚子航、恺撒、诺诺、小魔鬼路鸣泽、芬格尔、零、昂热、夏弥、上杉绘梨衣、源稚生、源稚女、楚天骄、乔薇尼、奥丁、橘政宗/王将/赫尔佐格、酒德麻衣、苏恩曦和苏茜。
 
@@ -149,7 +157,7 @@ skill/
 
 通用质量检查中的 `source_grounding` 和 `research_depth` 只统计 HTTP(S) URL，因此人物层没有用伪造网页链接换取形式通过。虚构人物以本地一手正文替代现实公众人物的外部 URL：每人 12 个可定位场景锚点、6 条矛盾记录、6 条推断记录，来源权重均为一级文本。
 
-完整验证口径见 [`skill/VALIDATION.md`](skill/VALIDATION.md)。
+完整验证口径见 [`skills/VALIDATION.md`](skills/VALIDATION.md)。
 
 ## 蒸馏素材来源
 
@@ -199,4 +207,4 @@ skill/
 - https://www.chinawriter.com.cn/n1/2020/1108/c405057-31923053.html
 - https://www.chinawriter.com.cn/n1/2025/1030/c404027-40592897.html
 
-作者研究笔记、来源权重、审计、综合与验证记录保存在 `skill/JiangNanNovel/knowledge/research/`；人物名单、语料矩阵和阶段检查点保存在 `skill/characters/_research/`。
+作者研究笔记、来源权重、审计、综合与验证记录保存在 `skills/JiangNanNovel/knowledge/research/`；人物名单、语料矩阵和阶段检查点保存在 `skills/characters/_research/`。

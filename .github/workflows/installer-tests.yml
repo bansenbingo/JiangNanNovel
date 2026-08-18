@@ -26,6 +26,8 @@ jobs:
           first="$(HOME="$test_root/home" PATH="$test_path" JIANGNANNOVEL_REPO_URL="$GITHUB_WORKSPACE" ./install.sh --agent codex 2>&1)"
           destination="$test_root/home/.agents/skills/JiangNanNovel"
           test -f "$destination/SKILL.md"
+          test -f "$destination/novel-source-compressor/SKILL.md"
+          test -f "$destination/novel-continuation-outline/SKILL.md"
           test -f "$destination/JiangNanNovel/SKILL.md"
           test -f "$destination/characters/lu_mingfei/SKILL.md"
           test "$(find "$destination/characters" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')" -eq 19
@@ -59,6 +61,8 @@ jobs:
           $first = & .\install.ps1 -Agent codex | Out-String
           $destination = Join-Path $testHome '.agents\skills\JiangNanNovel'
           if (-not (Test-Path (Join-Path $destination 'SKILL.md'))) { throw 'SKILL.md was not installed.' }
+          if (-not (Test-Path (Join-Path $destination 'novel-source-compressor\SKILL.md'))) { throw 'Source compressor Skill was not installed.' }
+          if (-not (Test-Path (Join-Path $destination 'novel-continuation-outline\SKILL.md'))) { throw 'Outline planning Skill was not installed.' }
           if (-not (Test-Path (Join-Path $destination 'JiangNanNovel\SKILL.md'))) { throw 'Author Skill was not installed.' }
           if (-not (Test-Path (Join-Path $destination 'characters\lu_mingfei\SKILL.md'))) { throw 'Character Skills were not installed.' }
           $characterSkills = @(Get-ChildItem (Join-Path $destination 'characters') -Recurse -Filter 'SKILL.md')
